@@ -130,6 +130,29 @@ block_size = 128
 
 means each training step uses 32 chunks, and each chunk contains 128 characters.
 
+## Training Environment
+
+The model was trained using a Kaggle notebook with GPU acceleration enabled.
+
+Kaggle provided the following GPU configuration:
+
+```text
+GPU: NVIDIA Tesla T4 x 2
+```
+
+Although two T4 GPUs were available in the Kaggle environment, this experiment used only one GPU. The original `gpt.py` script selects a single CUDA device using:
+
+```python
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+```
+
+This means the model runs on one available GPU by default and does not use distributed or multi-GPU training.
+
+During training, only one T4 GPU was actively used, while the second GPU remained mostly idle. This is expected because the training script is a simple single-process PyTorch implementation.
+
+A multi-GPU setup would require additional changes, such as using PyTorch Distributed Data Parallel, but this was not necessary for this small character-level pantun experiment.
+
+
 ## Running the Model
 
 Install the required Python packages:
